@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar"
 import InvoiceList from "@/components/dashboard/InvoiceList"
 import CreateInvoiceModal from "@/components/dashboard/CreateInvoiceModal"
 import { useWallet } from "@/context/WalletContext"
-import Footer from "@/components/Footer" // Import Footer
+import Footer from "@/components/Footer"
 
 export default function Dashboard() {
   const [invoices, setInvoices] = useState([])
@@ -17,10 +17,24 @@ export default function Dashboard() {
     const fetchInvoices = async () => {
       // Mock data for now
       const mockInvoices = [
-        { id: "1", title: "Website Development", amount: 2500, status: "pending", date: "2025-04-25" },
-        { id: "2", title: "Logo Design", amount: 500, status: "in-progress", date: "2025-04-28" },
-        { id: "3", title: "SEO Services", amount: 1200, status: "staked", date: "2025-04-30" },
-        { id: "4", title: "Content Writing", amount: 800, status: "completed", date: "2025-04-15" },
+        {
+          id: "1",
+          title: "Website Development",
+          amount: 2500,
+          status: "pending",
+          date: "2025-04-25",
+          deadline: "May 15",
+        },
+        { id: "2", title: "Logo Design", amount: 500, status: "in-progress", date: "2025-04-28", deadline: "May 5" },
+        { id: "3", title: "SEO Services", amount: 1200, status: "staked", date: "2025-04-30", deadline: "June 10" },
+        {
+          id: "4",
+          title: "Content Writing",
+          amount: 800,
+          status: "completed",
+          date: "2025-04-15",
+          deadline: "April 30",
+        },
       ]
       setInvoices(mockInvoices)
     }
@@ -29,7 +43,14 @@ export default function Dashboard() {
   }, [])
 
   const handleCreateInvoice = (newInvoice) => {
-    setInvoices([...invoices, { ...newInvoice, id: Date.now().toString() }])
+    setInvoices([
+      ...invoices,
+      {
+        ...newInvoice,
+        id: Date.now().toString(),
+        date: new Date().toISOString().split("T")[0],
+      },
+    ])
     setIsModalOpen(false)
   }
 
