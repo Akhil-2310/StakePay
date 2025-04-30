@@ -92,7 +92,7 @@ export default function InvoiceList({ invoices }) {
                         <div className="text-sm text-gray-500">#{invoice.id}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">${invoice.amount.toFixed(2)}</div>
+                        <div className="text-sm text-gray-900">{invoice.amount.toFixed(2)} TRBTC</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">{formatDate(invoice.date)}</div>

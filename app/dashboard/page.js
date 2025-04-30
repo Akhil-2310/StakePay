@@ -4,13 +4,11 @@ import { useState, useEffect } from "react"
 import Navbar from "@/components/Navbar"
 import InvoiceList from "@/components/dashboard/InvoiceList"
 import CreateInvoiceModal from "@/components/dashboard/CreateInvoiceModal"
-import { useWallet } from "@/context/WalletContext"
 import Footer from "@/components/Footer"
 
 export default function Dashboard() {
   const [invoices, setInvoices] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { address } = useWallet()
 
   useEffect(() => {
     // Fetch invoices from API or local storage
@@ -43,17 +41,16 @@ export default function Dashboard() {
   }, [])
 
   const handleCreateInvoice = (newInvoice) => {
-    setInvoices([
-      ...invoices,
+    setInvoices(prev => [
       {
         ...newInvoice,
-        id: Date.now().toString(),
+        id:   Date.now().toString(),
         date: new Date().toISOString().split("T")[0],
       },
+      ...prev,
     ])
     setIsModalOpen(false)
   }
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -68,13 +65,9 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {!address ? (
-          <div className="text-center py-12">
-            <p className="text-xl text-gray-600">Please connect your wallet to view invoices</p>
-          </div>
-        ) : (
+        {
           <InvoiceList invoices={invoices} />
-        )}
+        }
       </div>
 
       {isModalOpen && (

@@ -1,56 +1,64 @@
+// app/api/extract-invoice/route.js
+import { NextResponse } from "next/server"
+import { OpenAI } from "openai"
+
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+
 export async function POST(req) {
-    try {
-      const { text } = await req.json()
-  
-      // In a real application, this would call an AI service like OpenAI
-      // to extract structured data from natural language
-  
-      // For demo purposes, we'll use a simplified extraction logic
-      const extractedData = extractInvoiceDetails(text)
-  
-      return Response.json({ success: true, data: extractedData })
-    } catch (error) {
-      console.error("Error extracting invoice details:", error)
-      return Response.json({ success: false, error: "Failed to extract invoice details" }, { status: 500 })
+  try {
+    const { prompt } = await req.json()
+    if (!prompt) {
+      return NextResponse.json({ error: "`prompt` is required" }, { status: 400 })
     }
+
+    // 1) We add a system message so the model knows to use the function
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You’re a helper that *must* extract `title`,`description`,`amount`,`deadline` " +
+            "from any user text by calling the function extractInvoice."
+        },
+        { role: "user", content: prompt },
+      ],
+      functions: [
+        {
+          name: "extractInvoice",
+          description: "Extract invoice fields from text",
+          parameters: {
+            type: "object",
+            properties: {
+              title:       { type: "string" },
+              description: { type: "string" },
+              amount:      { type: "number", description: "TRBTC" },
+              deadline:    { type: "string", description: "YYYY-MM-DD" }
+            },
+            required: ["title","amount","deadline"]
+          }
+        }
+      ],
+      // let the model choose to call it
+      function_call: "auto"
+    })
+
+    // 2) Now we expect to see message.function_call
+    const message    = completion.choices[0].message
+    const funcCall   = message.function_call
+    if (!funcCall?.arguments) {
+      console.error("No function_call in response:", message)
+      throw new Error("AI did not return invoice data")
+    }
+
+    // 3) Parse and return
+    const args = JSON.parse(funcCall.arguments)
+    return NextResponse.json({ extracted: args })
+  } catch (err) {
+    console.error("extract-invoice error:", err)
+    return NextResponse.json(
+      { error: err.message || "Failed to extract invoice details" },
+      { status: 500 }
+    )
   }
-  
-  function extractInvoiceDetails(text) {
-    // This is a simplified extraction logic
-    // In a real app, you would use a more sophisticated NLP approach or AI model
-  
-    const amountMatch = text.match(/\$(\d+(\.\d+)?)|(\d+(\.\d+)?) dollars|(\d+) USD/i)
-    const deadlineMatch = text.match(/(due by|deadline|by|due on|due) ([A-Za-z]+ \d+|\d+\/\d+\/\d+|\d+-\d+-\d+)/i)
-  
-    // Extract title and description
-    let title = ""
-    let description = ""
-  
-    if (text.length > 10) {
-      // Simple heuristic: first sentence is title, rest is description
-      const sentences = text.split(/[.!?]/)
-      if (sentences.length > 0) {
-        title = sentences[0].trim()
-        description = sentences.slice(1).join(". ").trim()
-      }
-  
-      // If title is too long, truncate it
-      if (title.length > 50) {
-        title = title.substring(0, 47) + "..."
-      }
-    }
-  
-    const result = {
-      title: title || "",
-      description: description || title || "",
-      amount: amountMatch ? Number.parseFloat(amountMatch[1] || amountMatch[3] || amountMatch[5]) : null,
-      deadline: deadlineMatch ? deadlineMatch[2] : null,
-      isComplete: false,
-    }
-  
-    // Check if we have all required fields
-    result.isComplete = Boolean(result.title && result.amount && result.deadline)
-  
-    return result
-  }
-  
+}

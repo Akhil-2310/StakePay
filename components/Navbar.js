@@ -2,11 +2,36 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useWallet } from "@/context/WalletContext"
+// import { useWallet } from "@/context/WalletContext"
 import { useRouter } from "next/navigation"
 
+import { createAppKit } from "@reown/appkit/react";
+import { EthersAdapter } from "@reown/appkit-adapter-ethers";
+import { rootstockTestnet } from "@reown/appkit/networks";
+
+// 1. Get projectId at https://cloud.reown.com
+const projectId = "d679b0acafc801412fd613c2ebe6a961";
+
+// 2. Create a metadata object
+const metadata = {
+  name: "My Website",
+  description: "My Website description",
+  url: "https://mywebsite.com", // origin must match your domain & subdomain
+  icons: ["https://avatars.mywebsite.com/"],
+};
+
+// 3. Create the AppKit instance
+createAppKit({
+  adapters: [new EthersAdapter()],
+  metadata,
+  networks: [rootstockTestnet],
+  projectId,
+  features: {
+    analytics: true, // Optional - defaults to your Cloud configuration
+  },
+});
+
 export default function Navbar() {
-  const { address, connectWallet, disconnectWallet } = useWallet()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter()
 
@@ -26,31 +51,7 @@ export default function Navbar() {
             <span className="text-2xl font-bold text-[#2E6D9A]">StakePay</span>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-4">
-            {address ? (
-              <>
-                <button
-                  className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
-                  onClick={disconnectWallet}
-                >
-                  {address.slice(0, 6)}...{address.slice(-4)}
-                </button>
-                <button
-                  className="px-4 py-2 text-sm bg-[#2E6D9A] text-white rounded-md hover:bg-[#245a81] transition-colors"
-                  onClick={handleCreateInvoice}
-                >
-                  Create Invoice
-                </button>
-              </>
-            ) : (
-              <button
-                className="px-4 py-2 text-sm bg-[#2E6D9A] text-white rounded-md hover:bg-[#245a81] transition-colors"
-                onClick={connectWallet}
-              >
-                Connect Wallet
-              </button>
-            )}
-          </div>
+          <appkit-button />
 
           {/* Mobile menu button */}
           <div className="md:hidden">

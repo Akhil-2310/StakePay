@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <WalletProvider>{children}</WalletProvider>
+        {children}
       </body>
     </html>
   )
