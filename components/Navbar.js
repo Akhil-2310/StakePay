@@ -50,7 +50,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center">
           <Image
-    src="/logo.webp" // ✅ Replace with your actual image path
+    src="/final.webp" // ✅ Replace with your actual image path
     alt="StakePay Logo"
     width={64}       // ✅ Adjust as needed
     height={64}
