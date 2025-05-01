@@ -41,7 +41,7 @@ In Web3 freelance, DAO, and B2B workflows, informal coordination still dominates
 
 ## 📑 Smart Contract
 
-- **[Contract Address]**(https://rootstock-testnet.blockscout.com/address/0x4309Eb90A37cfd0ECE450305b24a2dE68b73f312) 
+- **[Contract Address](https://rootstock-testnet.blockscout.com/address/0x4309Eb90A37cfd0ECE450305b24a2dE68b73f312)**
 
 
 ## 🧪 Getting Started
