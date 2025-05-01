@@ -61,6 +61,7 @@ Watch our product demo here: [🎥 StakePay Demo Video Link](https://youtu.be/bS
 
 ## 👥 Team
 Laura @laurachwu – Product Lead, UX/UI, Narrative
+
 Akhil @akhilnanavati – Fullstack Dev, Smart Contracts
 
 ## 🗺️ Future Plans
