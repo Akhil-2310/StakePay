@@ -1,6 +1,5 @@
-**StakePay** is an AI-assisted invoice and agreement tool built on Rootstock that transforms plain-language work agreements into smart contract-powered, trustless task flows — secured by mutual staking.
-
 ![present](https://github.com/user-attachments/assets/0a2a1614-3df6-483f-8728-fe5a2a07253f)
+**StakePay** is an AI-assisted invoice and agreement tool built on Rootstock that transforms plain-language work agreements into smart contract-powered, trustless task flows — secured by mutual staking.
 
 
 
@@ -41,8 +40,7 @@ In Web3 freelance, DAO, and B2B workflows, informal coordination still dominates
 - **Infra:** Deployed locally (for now)
 
 
-
-## 🧪 Getting Started
+🧪 Getting Started
 
 Clone the repo and run locally:
 
@@ -51,16 +49,19 @@ npm install
 npm run dev
 # or
 yarn dev
+```
 Open http://localhost:3000 in your browser.
 
-📽️ Demo
+
+
+## 📽️ Demo
 Watch our product demo here: 🎥 StakePay Demo Video Link
 
-👥 Team
+## 👥 Team
 Laura @laurachwu – Product Lead, UX/UI, Narrative
 Akhil @akhilnanavati – Fullstack Dev, Smart Contracts
 
-🗺️ Future Plans
+## 🗺️ Future Plans
 - StakePay Credit Token
 - SDK Integration for DAOs and marketplaces
 - Public Reputation Modules
