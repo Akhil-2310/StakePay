@@ -42,13 +42,13 @@ In Web3 freelance, DAO, and B2B workflows, informal coordination still dominates
 
 ## 🧪 Getting Started
 
-Clone the repo and run locally:
+1. Clone the repo 
+2. Add the environment variables by copying the ```env.example``` to your ```.env```
+3. Run locally:
 
 ```bash
 npm install
 npm run dev
-# or
-yarn dev
 ```
 Open http://localhost:3000 in your browser.
 
