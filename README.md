@@ -56,7 +56,7 @@ Open http://localhost:3000 in your browser.
 Try the live version of StakePay here: https://stake-pay.vercel.app
 
 ## 📽️ Demo
-Watch our product demo here: 🎥 StakePay Demo Video Link
+Watch our product demo here: [🎥 StakePay Demo Video Link](https://youtu.be/bStLZj3iXFc)
 
 
 ## 👥 Team
