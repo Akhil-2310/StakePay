@@ -52,10 +52,12 @@ yarn dev
 ```
 Open http://localhost:3000 in your browser.
 
-
+## 🔗 Live Demo
+Try the live version of StakePay here: https://stake-pay.vercel.app
 
 ## 📽️ Demo
 Watch our product demo here: 🎥 StakePay Demo Video Link
+
 
 ## 👥 Team
 Laura @laurachwu – Product Lead, UX/UI, Narrative
