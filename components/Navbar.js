@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 // import { useWallet } from "@/context/WalletContext"
 import { useRouter } from "next/navigation"
 
@@ -48,7 +49,13 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold text-[#2E6D9A]">StakePay</span>
+          <Image
+    src="/logo.webp" // ✅ Replace with your actual image path
+    alt="StakePay Logo"
+    width={64}       // ✅ Adjust as needed
+    height={64}
+    className="mr-2"
+  />
           </Link>
 
           <appkit-button />

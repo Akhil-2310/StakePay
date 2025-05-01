@@ -42,7 +42,7 @@ export default function Features() {
         ),
       },
       {
-        title: "Secure Escrow Payments",
+        title: "Secure Payments",
         description: "Payments are held in a secure smart contract until delivery is confirmed, protecting both parties.",
         icon: (
           <svg

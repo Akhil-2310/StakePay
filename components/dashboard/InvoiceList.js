@@ -172,7 +172,7 @@ export default function InvoiceList({ invoices, onUpdateInvoice }) {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
-                        {invoice.amount.toFixed(2)} TRBTC
+                        {invoice.amount.toFixed(4)} TRBTC
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
