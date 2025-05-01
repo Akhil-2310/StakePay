@@ -33,11 +33,11 @@ In Web3 freelance, DAO, and B2B workflows, informal coordination still dominates
 
 ## ⚙️ Tech Stack
 
-- **Frontend:** Next.js, Tailwind  
+- **Frontend:** Next.js, TailwindCSS  
 - **Backend:** Smart Contracts on Rootstock  
-- **AI Integration:** ChatGPT for prompt-to-invoice conversion  
-- **Wallet:** Thirdweb / MetaMask  
-- **Infra:** Deployed locally (for now)
+- **AI Integration:** Open AI API for prompt-to-invoice conversion  
+- **Wallet:** MetaMask  
+- **Infra:** Deployed on Vercel
 
 
 ## 🧪 Getting Started
