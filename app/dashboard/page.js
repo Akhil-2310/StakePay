@@ -44,7 +44,6 @@ export default function Dashboard() {
     setInvoices(prev => [
       {
         ...newInvoice,
-        id:   Date.now().toString(),
         date: new Date().toISOString().split("T")[0],
       },
       ...prev,
@@ -66,7 +65,13 @@ export default function Dashboard() {
         </div>
 
         {
-          <InvoiceList invoices={invoices} />
+          <InvoiceList invoices={invoices} onUpdateInvoice={(id, status) =>
+            setInvoices(prev =>
+              prev.map(inv =>
+                inv.id === id ? { ...inv, status } : inv
+              )
+            )
+          } />
         }
       </div>
 

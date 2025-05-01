@@ -53,6 +53,17 @@ export async function POST(req) {
 
     // 3) Parse and return
     const args = JSON.parse(funcCall.arguments)
+
+const rawDl = args.deadline
+    const dl    = new Date(rawDl)
+    if (isNaN(dl)) {
+      return NextResponse.json(
+        { error: `Could not parse deadline “${rawDl}”. Please use YYYY-MM-DD.` },
+        { status: 400 }
+      )
+    }
+    // Overwrite with strict ISO
+    args.deadline = dl.toISOString().split("T")[0]
     return NextResponse.json({ extracted: args })
   } catch (err) {
     console.error("extract-invoice error:", err)

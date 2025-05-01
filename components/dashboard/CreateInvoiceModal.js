@@ -110,7 +110,6 @@ export default function CreateInvoiceModal({ onClose, onCreateInvoice }) {
       { role: "assistant", content: "Sure—please provide the updated details." },
     ])
   }
-
   const handleStakeAndCreate = async () => {
     if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
       setMessages((m) => [
@@ -119,43 +118,98 @@ export default function CreateInvoiceModal({ onClose, onCreateInvoice }) {
       ])
       return
     }
-
+  
+    const [year, month, day] = extractedData.deadline
+      .split("-")
+      .map(Number)
+  
+    if (!year || !month || !day) {
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          content: "Invalid deadline format. Use YYYY-MM-DD.",
+        },
+      ])
+      return
+    }
+  
+    const deadlineTs = Math.floor(
+      Date.UTC(year, month - 1, day, 23, 59, 59) / 1000
+    )
+    const nowTs = Math.floor(Date.now() / 1000)
+    if (deadlineTs <= nowTs) {
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          content:
+            "That deadline is already in the past. Please choose a future date.",
+        },
+      ])
+      return
+    }
+  
     setIsProcessing(true)
     setMessages((m) => [
       ...m,
-      { role: "assistant", content: `Staking ${stakeAmount} TRBTC and creating invoice…` },
+      {
+        role: "assistant",
+        content: `Staking ${stakeAmount} TRBTC and creating invoice…`,
+      },
     ])
-
+  
     try {
-      const escrow = await getEscrowContract()
+      const { contract } = await getEscrowContract()
       const amountWei = ethers.parseEther(extractedData.amount.toString())
-      const deadlineTs = Math.floor(new Date(extractedData.deadline).getTime() / 1000)
       const stakeWei = ethers.parseEther(stakeAmount)
-
-      const tx = await escrow.createInvoice(
+  
+      const tx = await contract.createInvoice(
         extractedData.title,
         extractedData.description || extractedData.title,
         amountWei,
         deadlineTs,
         { value: stakeWei }
       )
-      await tx.wait()
-
-      setMessages((m) => [
-        ...m,
-        { role: "assistant", content: "✅ Invoice created on-chain!" },
-      ])
-
+      const receipt = await tx.wait()
+  
+      const event = receipt.logs
+        .map((log) => {
+          try {
+            return contract.interface.parseLog(log)
+          } catch {
+            return null
+          }
+        })
+        .find((e) => e && e.name === "InvoiceCreated")
+  
+      if (!event) throw new Error("InvoiceCreated event not found")
+  
+      const onChainId = event.args.id.toString()
+      const onChainDeadline = Number(event.args.deadline)
+  
+      console.log("✅ onChain invoiceId:", onChainId)
+      console.log("🗓️ onChain deadline:", onChainDeadline, new Date(onChainDeadline * 1000).toISOString())
+  
+      const deadlineIso = new Date(onChainDeadline * 1000)
+        .toISOString()
+        .split("T")[0]
+  
       onCreateInvoice({
-        id: Date.now().toString(),
+        id: onChainId,
         title: extractedData.title,
         description: extractedData.description,
         amount: extractedData.amount,
-        deadline: extractedData.deadline,
+        deadline: deadlineIso,
         stakeAmount: parseFloat(stakeAmount),
         status: "staked",
         date: new Date().toISOString().split("T")[0],
       })
+  
+      setMessages((m) => [
+        ...m,
+        { role: "assistant", content: "✅ Invoice created on-chain!" },
+      ])
       onClose()
     } catch (err) {
       console.error(err)
@@ -167,6 +221,9 @@ export default function CreateInvoiceModal({ onClose, onCreateInvoice }) {
       setIsProcessing(false)
     }
   }
+  
+  
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
