@@ -212,9 +212,6 @@ export default function InvoiceList({ invoices, onUpdateInvoice }) {
                           </button>
                         )}
                       {invoice.status === "in-progress" &&
-                        walletAddress &&
-                        walletAddress.toLowerCase() ===
-                          invoice.supplier && (
                           <button
                             onClick={() => handleComplete(invoice)}
                             disabled={loadingId === invoice.id}
@@ -224,7 +221,7 @@ export default function InvoiceList({ invoices, onUpdateInvoice }) {
                               ? "Completing…"
                               : "Complete"}
                           </button>
-                        )}
+                        }
                     </td>
                   </tr>
                 ))
