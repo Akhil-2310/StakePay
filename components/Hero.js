@@ -6,7 +6,7 @@ export default function Hero() {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Secure Invoice Management with <span className="text-[#2E6D9A]">Blockchain Trust</span>
+            Secure Invoice Management powered by <span className="text-[#2E6D9A]">Blockchain</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8">
             Create, manage, and secure your invoices with blockchain technology. StakePay ensures trust between

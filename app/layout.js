@@ -1,4 +1,3 @@
-import { WalletProvider } from "@/context/WalletContext"
 import "./globals.css"
 
 export const metadata = {

@@ -1,8 +1,3 @@
-/*
-  File: components/CreateInvoiceModal.js
-  Fully implemented AI invoice assistant with on-chain invoice creation.
-*/
-
 "use client"
 
 import { useState, useRef, useEffect } from "react"

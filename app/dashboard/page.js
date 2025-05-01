@@ -1,40 +1,46 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { ethers } from "ethers"
 import Navbar from "@/components/Navbar"
 import InvoiceList from "@/components/dashboard/InvoiceList"
 import CreateInvoiceModal from "@/components/dashboard/CreateInvoiceModal"
 import Footer from "@/components/Footer"
+import { getEscrowContract } from "@/lib/getEscrowContract"
 
 export default function Dashboard() {
   const [invoices, setInvoices] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
-    // Fetch invoices from API or local storage
     const fetchInvoices = async () => {
-      // Mock data for now
-      const mockInvoices = [
-        {
-          id: "1",
-          title: "Website Development",
-          amount: 2500,
-          status: "pending",
-          date: "2025-04-25",
-          deadline: "May 15",
-        },
-        { id: "2", title: "Logo Design", amount: 500, status: "in-progress", date: "2025-04-28", deadline: "May 5" },
-        { id: "3", title: "SEO Services", amount: 1200, status: "staked", date: "2025-04-30", deadline: "June 10" },
-        {
-          id: "4",
-          title: "Content Writing",
-          amount: 800,
-          status: "completed",
-          date: "2025-04-15",
-          deadline: "April 30",
-        },
-      ]
-      setInvoices(mockInvoices)
+      try {
+        const { contract } = await getEscrowContract()
+        const nextId = await contract.nextId()
+        const items = []
+
+        for (let i = 0; i < nextId; i++) {
+          const inv = await contract.invoices(i)
+          if (inv.supplier !== ethers.ZeroAddress) {
+            const statusMap = ["staked", "in-progress", "completed", "cancelled"]
+
+            items.push({
+              id: i.toString(),
+              title: inv.title,
+              description: inv.description,
+              amount: Number(ethers.formatEther(inv.amount)),
+              stakeAmount: Number(ethers.formatEther(inv.supplierStake)),
+              deadline: new Date(Number(inv.deadline) * 1000).toISOString().split("T")[0],
+              date: new Date().toISOString().split("T")[0],
+              status: statusMap[inv.status] || "unknown"
+            })
+          }
+        }
+
+        setInvoices(items)
+      } catch (err) {
+        console.error("Failed to fetch invoices:", err)
+      }
     }
 
     fetchInvoices()
@@ -50,6 +56,7 @@ export default function Dashboard() {
     ])
     setIsModalOpen(false)
   }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />

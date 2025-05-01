@@ -39,35 +39,25 @@ export default function Footer() {
                   About
                 </Link>
               </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-[#2E6D9A]">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-[#2E6D9A]">
-                  Careers
-                </Link>
-              </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Legal</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Beliefs</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="#" className="text-gray-600 hover:text-[#2E6D9A]">
-                  Privacy
+                 Stake
                 </Link>
               </li>
               <li>
                 <Link href="#" className="text-gray-600 hover:text-[#2E6D9A]">
-                  Terms
+                 Deliver
                 </Link>
               </li>
               <li>
                 <Link href="#" className="text-gray-600 hover:text-[#2E6D9A]">
-                  Security
+                  Trust
                 </Link>
               </li>
             </ul>
