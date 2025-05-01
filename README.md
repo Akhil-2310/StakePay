@@ -40,7 +40,7 @@ In Web3 freelance, DAO, and B2B workflows, informal coordination still dominates
 - **Infra:** Deployed locally (for now)
 
 
-🧪 Getting Started
+## 🧪 Getting Started
 
 Clone the repo and run locally:
 
